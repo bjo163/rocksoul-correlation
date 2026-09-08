@@ -1,0 +1,84 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://moonwitness.local/schemas/correlation-edge.schema.json",
+  "title": "Rocksoul Correlation Edge",
+  "type": "object",
+  "required": [
+    "id",
+    "source_ref",
+    "target_ref",
+    "relation_type",
+    "direction",
+    "support",
+    "counterevidence",
+    "alternative_explanations",
+    "dimensions",
+    "confidence",
+    "epistemic_status",
+    "sources"
+  ],
+  "properties": {
+    "id": {"type": "string", "pattern": "^CORR-[A-Z0-9-]+$"},
+    "source_ref": {"$ref": "#/$defs/ref"},
+    "target_ref": {"$ref": "#/$defs/ref"},
+    "relation_type": {
+      "type": "string",
+      "enum": [
+        "attests",
+        "witnessed_by",
+        "describes",
+        "corresponds_to",
+        "temporally_aligns_with",
+        "geographically_aligns_with",
+        "textually_parallels",
+        "legally_relevant_to",
+        "contradicts",
+        "supports",
+        "weakens",
+        "derived_from",
+        "transmitted_by",
+        "alternative_to"
+      ]
+    },
+    "direction": {"type": "string", "enum": ["directed", "undirected"]},
+    "support": {"type": "array", "items": {"type": "string"}},
+    "counterevidence": {"type": "array", "items": {"type": "string"}},
+    "alternative_explanations": {"type": "array", "items": {"type": "string"}},
+    "dimensions": {
+      "type": "object",
+      "required": ["temporal", "geographic", "semantic", "identity", "provenance"],
+      "properties": {
+        "temporal": {"$ref": "#/$defs/score"},
+        "geographic": {"$ref": "#/$defs/score"},
+        "semantic": {"$ref": "#/$defs/score"},
+        "identity": {"$ref": "#/$defs/score"},
+        "provenance": {"$ref": "#/$defs/score"}
+      },
+      "additionalProperties": false
+    },
+    "confidence": {"$ref": "#/$defs/score"},
+    "epistemic_status": {
+      "type": "string",
+      "enum": ["SUPPORTED", "PARTIAL", "DISPUTED", "UNRESOLVED", "CONTRADICTED", "INDETERMINATE"]
+    },
+    "sources": {"type": "array", "minItems": 1, "items": {"type": "string"}},
+    "notes": {"type": "string"}
+  },
+  "$defs": {
+    "score": {"type": "number", "minimum": 0, "maximum": 1},
+    "ref": {
+      "type": "object",
+      "required": ["repository", "domain", "record_id"],
+      "properties": {
+        "repository": {
+          "type": "string",
+          "enum": ["rocksoul-mftl", "rocksoul-legend", "rocksoul-superhero", "rocksoul-rgbl", "rocksoul-aws"]
+        },
+        "domain": {"type": "string", "enum": ["STORY", "EVENT", "PERSON", "TEXT", "LAW"]},
+        "record_id": {"type": "string", "minLength": 1}
+      },
+      "additionalProperties": false
+    }
+  },
+  "additionalProperties": false
+}
