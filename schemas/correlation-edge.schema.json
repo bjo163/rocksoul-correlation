@@ -32,8 +32,8 @@
       "type":"object",
       "required":["repository","domain","record_id"],
       "properties": {
-        "repository":{"type":"string","enum":["rocksoul-mftl","rocksoul-legend","rocksoul-superhero","rocksoul-rgbl","rocksoul-aws"]},
-        "domain":{"type":"string","enum":["STORY","EVENT","PERSON","TEXT","LAW"]},
+        "repository":{"type":"string","enum":["rocksoul-mftl","rocksoul-legend","rocksoul-superhero","rocksoul-rgbl","rocksoul-aws","rocksoul-jizz"]},
+        "domain":{"type":"string","enum":["STORY","EVENT","PERSON","TEXT","LAW","PERSPECTIVE"]},
         "record_id":{"type":"string","minLength":1},
         "resolution":{"type":"string","enum":["canonical","candidate"],"default":"canonical"}
       },
