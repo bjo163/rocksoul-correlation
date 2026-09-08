@@ -6,33 +6,27 @@
   "edges": [
     {
       "id": "CORR-OSEBERG-EVENT-PERSON-001",
-      "source_ref": {"repository":"rocksoul-legend","domain":"EVENT","record_id":"EVT-OSEBERG-SHIP-BURIAL","resolution":"candidate"},
-      "target_ref": {"repository":"rocksoul-superhero","domain":"PERSON","record_id":"PER-OSEBERG-TWO-WOMEN","resolution":"candidate"},
-      "relation_type": "supports",
-      "direction": "directed",
-      "support": ["Museum documentation identifies skeletal remains from two women in the Oseberg grave, one older and one younger."],
+      "source_ref": {"repository":"rocksoul-legend","domain":"EVENT","record_id":"EVT-OSEBERG-SHIP-BURIAL","resolution":"canonical"},
+      "target_ref": {"repository":"rocksoul-superhero","domain":"PERSON","record_id":"PER-OSEBERG-TWO-WOMEN","resolution":"canonical"},
+      "relation_type": "supports", "direction": "directed",
+      "support": ["Archaeological documentation identifies skeletal remains from two women in the Oseberg grave."],
       "counterevidence": ["The exact historical identities, status, relationship, and roles of the women remain debated or unknown."],
       "alternative_explanations": ["elite principal burial with attendant","two elite women","kin relationship","ritual or household relationship not recoverable from current evidence"],
-      "dimensions": {"temporal":0.9,"geographic":1,"semantic":0.84,"identity":0.62,"provenance":0.92},
-      "confidence": 0.76,
-      "epistemic_status": "PARTIAL",
-      "sources": ["https://www.vikingtidsmuseet.no/vikingskipshuset/utstillingsarkiv/levd-liv-skjelettene-fra-oseberg-og-gokstad/dokumenter/plakater.pdf"],
-      "notes": "The edge supports the existence of two female persons connected to the burial, not a named historical identity."
+      "dimensions": {"temporal":0.9,"geographic":1,"semantic":0.84,"identity":0.62,"provenance":0.92}, "confidence": 0.76,
+      "epistemic_status": "PARTIAL", "sources": ["https://osebergvikingarv.no/eng/2025/02/03/who-were-the-oseberg-women/"],
+      "notes": "EVENT and anonymous PERSON endpoints are canonical; canonical identity deliberately does not imply a historical name or role."
     },
     {
       "id": "CORR-OSEBERG-PERSON-STORY-001",
-      "source_ref": {"repository":"rocksoul-superhero","domain":"PERSON","record_id":"PER-OSEBERG-TWO-WOMEN","resolution":"candidate"},
+      "source_ref": {"repository":"rocksoul-superhero","domain":"PERSON","record_id":"PER-OSEBERG-TWO-WOMEN","resolution":"canonical"},
       "target_ref": {"repository":"rocksoul-mftl","domain":"STORY","record_id":"STORY-OSEBERG-RITUAL-ROLE","resolution":"candidate"},
-      "relation_type": "weakens",
-      "direction": "directed",
+      "relation_type": "weakens", "direction": "directed",
       "support": ["Unresolved personal identities limit strong claims about specific ritual or political roles."],
       "counterevidence": ["Rich burial context can still support broader statements about status and funerary significance."],
       "alternative_explanations": ["ritual specialist","elite ruler or household member","companion or attendant","multiple-status burial"],
-      "dimensions": {"temporal":0.75,"geographic":0.95,"semantic":0.68,"identity":0.35,"provenance":0.82},
-      "confidence": 0.61,
-      "epistemic_status": "UNRESOLVED",
-      "sources": ["https://www.vikingtidsmuseet.no/vikingskipshuset/utstillingsarkiv/levd-liv-skjelettene-fra-oseberg-og-gokstad/dokumenter/plakater.pdf"],
-      "notes": "Unknown identity is represented as uncertainty rather than filled with a preferred story."
+      "dimensions": {"temporal":0.75,"geographic":0.95,"semantic":0.68,"identity":0.35,"provenance":0.82}, "confidence": 0.61,
+      "epistemic_status": "UNRESOLVED", "sources": ["https://osebergvikingarv.no/eng/2025/02/03/who-were-the-oseberg-women/"],
+      "notes": "PERSON is canonical as anonymous archaeological identity; STORY remains candidate."
     }
   ]
 }
