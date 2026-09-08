@@ -1,31 +1,36 @@
 {
-  "generated_at": "2026-09-08T03:08:00Z",
+  "generated_at": "2026-09-08T09:22:00Z",
   "policy": "Owner repository movement marks dependent correlation references stale-for-review; it does not invalidate them automatically.",
   "repositories": {
     "rocksoul-mftl": {
       "domain": "STORY",
       "branch": "main",
-      "observed_head_sha": "5ed220b12416d8c22804ef036ef97bb70a29a97b"
+      "observed_head_sha": "fe38f3b5596773c3b67f788fbc1039c36edcf49b"
     },
     "rocksoul-legend": {
       "domain": "EVENT",
       "branch": "main",
-      "observed_head_sha": "46c2571bd2a0fcfbfff2175fc9dda3c7b99d801a"
+      "observed_head_sha": "1d0728e477dd1cccae1e8135d5297ff2e65a406b"
     },
     "rocksoul-superhero": {
       "domain": "PERSON",
       "branch": "main",
-      "observed_head_sha": "e138795aa11250cb3f881005769e632dd634a0d5"
+      "observed_head_sha": "d60e8e5b26d2342705eaff4a8c9970d7c8dfdb27"
     },
     "rocksoul-rgbl": {
       "domain": "TEXT",
       "branch": "main",
-      "observed_head_sha": "f59331449fedf90ca494c4dcc35855f148b7afe1"
+      "observed_head_sha": "0cab55211d0645b467ef4cd7ba79d08e5aedcff4"
     },
     "rocksoul-aws": {
       "domain": "LAW",
       "branch": "main",
       "observed_head_sha": "8182d8aa98746543129032668e4bfa2b65dc67a5"
+    },
+    "rocksoul-jizz": {
+      "domain": "PERSPECTIVE",
+      "branch": "main",
+      "observed_head_sha": "a4176397553a70386cb5ca4a817e623252054938"
     }
   }
 }
