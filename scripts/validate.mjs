@@ -8,10 +8,11 @@ const ownerByDomain = {
   PERSON: "rocksoul-superhero",
   TEXT: "rocksoul-rgbl",
   LAW: "rocksoul-aws",
+  PERSPECTIVE: "rocksoul-jizz",
 }
 const relationTypes = new Set([
   "attests","witnessed_by","describes","corresponds_to","temporally_aligns_with",
-  "geographically_aligns_with","textually_parallels","legally_relevant_to","contradicts",
+  "geographically_aligns_with","textually_parallels","legally_relevant_to","observes","frames","reacts_to","contradicts",
   "supports","weakens","derived_from","transmitted_by","alternative_to",
 ])
 const epistemicStates = new Set(["SUPPORTED","PARTIAL","DISPUTED","UNRESOLVED","CONTRADICTED","INDETERMINATE"])
@@ -27,18 +28,22 @@ let candidateRefs = 0
 const files = (await readdir(path.join(root, "data", "cases"))).filter((name) => name.endsWith(".json")).sort()
 if (!files.length) failures.push("no correlation cases found")
 
+function ownershipError(ref) {
+  if (!ref || typeof ref !== "object") return "reference missing"
+  if (!ownerByDomain[ref.domain]) return `invalid domain ${ref.domain}`
+  if (ownerByDomain[ref.domain] !== ref.repository) return `ownership mismatch ${ref.domain} -> ${ref.repository}; expected ${ownerByDomain[ref.domain]}`
+  return null
+}
+
 function checkRef(ref, label, file) {
-  if (!ref || typeof ref !== "object") return failures.push(`${file}: ${label} missing`)
-  if (!ownerByDomain[ref.domain]) failures.push(`${file}: ${label} invalid domain ${ref.domain}`)
-  else if (ownerByDomain[ref.domain] !== ref.repository) {
-    failures.push(`${file}: ${label} ownership mismatch ${ref.domain} -> ${ref.repository}; expected ${ownerByDomain[ref.domain]}`)
-  }
-  if (!ref.record_id || typeof ref.record_id !== "string") failures.push(`${file}: ${label} record_id missing`)
-  const resolution = ref.resolution ?? "canonical"
+  const ownership = ownershipError(ref)
+  if (ownership) failures.push(`${file}: ${label} ${ownership}`)
+  if (!ref?.record_id || typeof ref.record_id !== "string") failures.push(`${file}: ${label} record_id missing`)
+  const resolution = ref?.resolution ?? "canonical"
   if (!resolutionStates.has(resolution)) failures.push(`${file}: ${label} invalid resolution ${resolution}`)
   if (resolution === "candidate") candidateRefs += 1
   else canonicalRefs += 1
-  if (ref.domain) coverage.add(ref.domain)
+  if (ref?.domain) coverage.add(ref.domain)
 }
 
 for (const file of files) {
@@ -92,8 +97,16 @@ for (const file of files) {
   }
 }
 
+// Historical golden cases predate the PERSPECTIVE owner. They remain valid historical fixtures;
+// contract support is tested directly rather than fabricating a JIZZ edge solely for coverage.
 for (const domain of ["STORY", "EVENT", "PERSON", "TEXT", "LAW"]) {
   if (!coverage.has(domain)) failures.push(`corpus missing ${domain} coverage`)
+}
+if (ownershipError({ domain: "PERSPECTIVE", repository: "rocksoul-jizz", record_id: "PERSP-JIZZ-CONTRACT-PROBE" })) {
+  failures.push("PERSPECTIVE -> rocksoul-jizz contract probe failed")
+}
+if (!ownershipError({ domain: "PERSPECTIVE", repository: "rocksoul-mftl", record_id: "PERSP-JIZZ-CONTRACT-PROBE" })) {
+  failures.push("invalid PERSPECTIVE -> rocksoul-mftl owner pair was accepted")
 }
 if (files.length < 5) failures.push(`golden corpus requires at least 5 cases; found ${files.length}`)
 if (canonicalRefs === 0) failures.push("corpus must include at least one canonical reference")
@@ -112,4 +125,4 @@ if (failures.length) {
 }
 
 console.log(`Correlation validation passed: ${files.length} cases, ${seenIds.size} edges, ${canonicalRefs} canonical refs, ${candidateRefs} candidate refs.`)
-console.log(`Domain coverage: ${[...coverage].sort().join(", ")}`)
+console.log(`Domain coverage: ${[...coverage].sort().join(", ")}; contract also supports PERSPECTIVE -> rocksoul-jizz.`)
