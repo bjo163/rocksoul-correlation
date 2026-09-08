@@ -1,7 +1,8 @@
 import { readdir, readFile } from "node:fs/promises"
 import path from "node:path"
 import { fileURLToPath } from "node:url"
-import { loadFreshnessSnapshot } from "./freshness.mjs"\nimport { toQualifiedReference } from "./qualified-ref.mjs"
+import { loadFreshnessSnapshot } from "./freshness.mjs"
+import { toQualifiedReference } from "./qualified-ref.mjs"
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..")
 const casesDir = path.join(root, "data", "cases")
@@ -210,7 +211,8 @@ export async function provenanceForNode(id) {
     owner_branch: owner?.branch ?? "main",
     observed_head_sha: owner?.observed_head_sha ?? null,
     owner_url: `https://github.com/bjo163/${node.repository}`,
-    record_resolution: node.resolution ?? "canonical",\n    qualified_reference: node.qualified_ref ?? toQualifiedReference(node),
+    record_resolution: node.resolution ?? "canonical",
+    qualified_reference: node.qualified_ref ?? toQualifiedReference(node),
     freshness_policy: snapshot.policy,
   }
 }
