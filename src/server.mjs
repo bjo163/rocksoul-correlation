@@ -27,7 +27,7 @@ export function createCorrelationServer() {
       if (req.method !== "GET") return json(res, 405, { error: "method_not_allowed" })
 
       if (url.pathname === "/health") {
-        return json(res, 200, { status: "ok", service: "rocksoul-correlation", version: "0.4.0" })
+        return json(res, 200, { status: "ok", service: "rocksoul-correlation", version: "0.5.0" })
       }
       if (url.pathname === "/api/v1/correlation/cases") {
         const filters = Object.fromEntries(url.searchParams.entries())
@@ -78,6 +78,15 @@ export function createCorrelationServer() {
       if (url.pathname === "/api/v1/correlation/freshness") {
         return json(res, 200, { data: await auditFreshness() })
       }
+      if (url.pathname === "/api/v1/correlation/reanalysis") {
+        return json(res, 200, { data: await buildReanalysisQueue() })
+      }
+      if (url.pathname === "/api/v1/correlation/refs/resolve") {
+        const ref = url.searchParams.get("ref")
+        if (!ref) return json(res, 400, { error: "ref_required" })
+        const data = await resolveQualifiedReference(ref, { resolution: url.searchParams.get("resolution") ?? "canonical" })
+        return data ? json(res, 200, { data }) : json(res, 400, { error: "invalid_qualified_reference", ref })
+      }
       return json(res, 404, {
         error: "not_found",
         endpoints: [
@@ -90,7 +99,7 @@ export function createCorrelationServer() {
           "/api/v1/correlation/nodes/:node_id/provenance",
           "/api/v1/correlation/edges/:edge_id/provenance",
           "/api/v1/correlation/path?source=...&target=...",
-          "/api/v1/correlation/freshness",
+          "/api/v1/correlation/freshness",\n          "/api/v1/correlation/reanalysis",\n          "/api/v1/correlation/refs/resolve?ref=mftl:...",
         ],
       })
     } catch (error) {

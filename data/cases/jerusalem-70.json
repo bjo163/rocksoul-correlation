@@ -9,12 +9,14 @@
       "source_ref": {
         "repository": "rocksoul-rgbl",
         "domain": "TEXT",
-        "record_id": "mw:passage:sblgnt:v1-2:mark:13:2"
+        "record_id": "mw:passage:sblgnt:v1-2:mark:13:2",
+        "resolution": "canonical"
       },
       "target_ref": {
         "repository": "rocksoul-mftl",
         "domain": "STORY",
-        "record_id": "JERUSALEM-70-TEMPLE-PREDICTION"
+        "record_id": "MYTH-JERUSALEM-TEMPLE-DESTRUCTION-PROPHECY-000001",
+        "resolution": "canonical"
       },
       "relation_type": "attests",
       "direction": "directed",
@@ -35,7 +37,7 @@
       "confidence": 0.9,
       "epistemic_status": "SUPPORTED",
       "sources": [
-        "rocksoul-rgbl:mw:passage:sblgnt:v1-2:mark:13:2"
+        "rgbl:mw:passage:sblgnt:v1-2:mark:13:2"
       ],
       "notes": "This edge asserts textual attestation only."
     },
@@ -44,12 +46,14 @@
       "source_ref": {
         "repository": "rocksoul-mftl",
         "domain": "STORY",
-        "record_id": "JERUSALEM-70-TEMPLE-PREDICTION"
+        "record_id": "MYTH-JERUSALEM-TEMPLE-DESTRUCTION-PROPHECY-000001",
+        "resolution": "canonical"
       },
       "target_ref": {
         "repository": "rocksoul-legend",
         "domain": "EVENT",
-        "record_id": "EVT-JERUSALEM-TEMPLE-70CE"
+        "record_id": "EVT-JERUSALEM-SECOND-TEMPLE-DESTRUCTION-70",
+        "resolution": "canonical"
       },
       "relation_type": "corresponds_to",
       "direction": "directed",
@@ -73,8 +77,8 @@
       "confidence": 0.82,
       "epistemic_status": "PARTIAL",
       "sources": [
-        "rocksoul-mftl:JERUSALEM-70-TEMPLE-PREDICTION",
-        "rocksoul-legend:EVT-JERUSALEM-TEMPLE-70CE"
+        "mftl:MYTH-JERUSALEM-TEMPLE-DESTRUCTION-PROPHECY-000001",
+        "legend:EVT-JERUSALEM-SECOND-TEMPLE-DESTRUCTION-70"
       ],
       "notes": "Correspondence is preserved without a fulfillment verdict."
     },
@@ -83,12 +87,14 @@
       "source_ref": {
         "repository": "rocksoul-legend",
         "domain": "EVENT",
-        "record_id": "EVT-JERUSALEM-TEMPLE-70CE"
+        "record_id": "EVT-JERUSALEM-SECOND-TEMPLE-DESTRUCTION-70",
+        "resolution": "canonical"
       },
       "target_ref": {
         "repository": "rocksoul-superhero",
         "domain": "PERSON",
-        "record_id": "PER-JERUSALEM-FLAVIUS-JOSEPHUS"
+        "record_id": "PER-JERUSALEM-FLAVIUS-JOSEPHUS",
+        "resolution": "canonical"
       },
       "relation_type": "witnessed_by",
       "direction": "directed",
@@ -111,8 +117,8 @@
       "confidence": 0.93,
       "epistemic_status": "SUPPORTED",
       "sources": [
-        "rocksoul-legend:EVT-JERUSALEM-TEMPLE-70CE",
-        "rocksoul-superhero:PER-JERUSALEM-FLAVIUS-JOSEPHUS"
+        "legend:EVT-JERUSALEM-SECOND-TEMPLE-DESTRUCTION-70",
+        "superhero:PER-JERUSALEM-FLAVIUS-JOSEPHUS"
       ],
       "notes": "Human proximity strengthens provenance but does not create a theological verdict."
     }

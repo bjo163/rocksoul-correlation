@@ -1,4 +1,4 @@
-# Correlation Runtime API v0.4
+# Correlation Runtime API v0.5
 
 Public read-only API for querying and traversing the MoonWitness × Rocksoul evidence graph.
 
@@ -86,3 +86,16 @@ Possible states:
 ## Consumer contract
 
 WEB may present reviewed/public graph state. CRAYON may proxy, filter and orchestrate review workflows. Neither consumer may silently convert a stale or disputed edge into a stronger epistemic claim.
+
+
+### `GET /api/v1/correlation/refs/resolve?ref=...`
+
+Resolves the qualified-reference envelope without copying the owner record. Canonical short prefixes are:
+
+`mftl:` · `legend:` · `superhero:` · `rgbl:` · `aws:`
+
+Repository-name aliases are accepted for backwards compatibility, but responses normalize to the short prefix.
+
+### `GET /api/v1/correlation/reanalysis`
+
+Returns exact reviewed cases/edges that require re-review because an owner repository is stale or unavailable. Upstream movement is a review trigger, **not an automatic verdict change**.
