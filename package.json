@@ -1,11 +1,18 @@
 {
   "name": "rocksoul-correlation",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "private": false,
   "type": "module",
-  "description": "Public provenance-first correlation graph for the MoonWitness × Rocksoul ecosystem.",
+  "description": "Public provenance-first correlation graph and read-only runtime API for the MoonWitness × Rocksoul ecosystem.",
+  "exports": {
+    ".": "./src/runtime.mjs",
+    "./server": "./src/server.mjs"
+  },
   "scripts": {
-    "validate": "node scripts/validate.mjs"
+    "validate": "node scripts/validate.mjs",
+    "test": "node --test tests/*.test.mjs",
+    "start": "node src/server.mjs",
+    "ci": "npm run validate && npm test"
   },
   "engines": {
     "node": ">=22"
