@@ -90,7 +90,7 @@ test("provenance resolves node and edge owners without copying canonical records
   assert.ok(edge.target.owner_repository)
 })
 
-test("freshness audit marks upstream movement stale-for-review instead of invalid", async () => {
+test("freshness audit covers all six research-domain owners and marks movement stale-for-review", async () => {
   const snapshot = await loadFreshnessSnapshot()
   const fakeFetch = async (url) => {
     const repo = Object.keys(snapshot.repositories).find((name) => url.includes(`/${name}/`))
@@ -99,9 +99,10 @@ test("freshness audit marks upstream movement stale-for-review instead of invali
     return new Response(JSON.stringify({ commit: { sha } }), { status: 200, headers: { "content-type": "application/json" } })
   }
   const result = await auditFreshness({ fetchImpl: fakeFetch })
-  assert.equal(result.repositories.length, 5)
+  assert.equal(result.repositories.length, 6)
   assert.equal(result.counts.STALE_REVIEW_REQUIRED, 1)
   assert.equal(result.repositories.find((item) => item.repository === "rocksoul-mftl").freshness, "STALE_REVIEW_REQUIRED")
+  assert.ok(result.repositories.some((item) => item.repository === "rocksoul-jizz" && item.domain === "PERSPECTIVE"))
 })
 
 test("HTTP API serves query traversal and provenance endpoints", async () => {
@@ -142,6 +143,10 @@ test("qualified reference protocol preserves canonical owner identity", async ()
   assert.equal(ref.domain,"STORY")
   assert.equal(toQualifiedReference({repository:"rocksoul-rgbl",record_id:"mw:passage:sblgnt:v1-2:mark:13:2"}),"rgbl:mw:passage:sblgnt:v1-2:mark:13:2")
   assert.equal(parseQualifiedReference("rocksoul-superhero:PER-JERUSALEM-FLAVIUS-JOSEPHUS").qualified_ref,"superhero:PER-JERUSALEM-FLAVIUS-JOSEPHUS")
+  const perspective = parseQualifiedReference("jizz:PERSP-EXAMPLE")
+  assert.equal(perspective.repository, "rocksoul-jizz")
+  assert.equal(perspective.domain, "PERSPECTIVE")
+  assert.equal(toQualifiedReference({repository:"rocksoul-jizz",record_id:"PERSP-EXAMPLE"}), "jizz:PERSP-EXAMPLE")
   const resolved = await resolveQualifiedReference(ref.qualified_ref)
   assert.equal(resolved.observed_owner_head_sha.length,40)
 })
