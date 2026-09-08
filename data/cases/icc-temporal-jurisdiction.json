@@ -3,21 +3,16 @@
   "title": "ICC temporal jurisdiction — event date versus legal applicability",
   "status": "candidate-reviewed",
   "description": "Tests EVENT × LAW correlation while keeping legal applicability separate from guilt, liability, or judicial judgment.",
-  "edges": [
-    {
-      "id": "CORR-ICC-EVENT-LAW-001",
-      "source_ref": {"repository":"rocksoul-legend","domain":"EVENT","record_id":"EVT-ICC-HYPOTHETICAL-CONDUCT-DATE","resolution":"candidate"},
-      "target_ref": {"repository":"rocksoul-aws","domain":"LAW","record_id":"LAW-ICC-ROME-STATUTE-ARTICLE-11","resolution":"candidate"},
-      "relation_type": "legally_relevant_to",
-      "direction": "directed",
-      "support": ["Article 11 makes the timing of alleged conduct legally relevant to whether ICC temporal jurisdiction can exist."],
-      "counterevidence": ["Temporal fit alone does not establish territorial or personal jurisdiction, admissibility, crime elements, responsibility, or guilt."],
-      "alternative_explanations": ["jurisdiction may arise through a later state-party date subject to the Statute","article 12(3) acceptance may alter the jurisdictional pathway","another tribunal or domestic jurisdiction may be relevant instead"],
-      "dimensions": {"temporal":1,"geographic":0.5,"semantic":0.96,"identity":0.5,"provenance":0.98},
-      "confidence": 0.9,
-      "epistemic_status": "SUPPORTED",
-      "sources": ["https://www.icc-cpi.int/sites/default/files/2025-05/Rome-Statute-EN-2025.pdf"],
-      "notes": "This fixture tests applicability logic only. It must never be rendered as a court finding or guilt determination."
-    }
-  ]
+  "edges": [{
+    "id": "CORR-ICC-EVENT-LAW-001",
+    "source_ref": {"repository":"rocksoul-legend","domain":"EVENT","record_id":"EVT-ICC-HYPOTHETICAL-CONDUCT-DATE","resolution":"candidate"},
+    "target_ref": {"repository":"rocksoul-aws","domain":"LAW","record_id":"LAW-ICC-ROME-STATUTE-ARTICLE-11","resolution":"canonical"},
+    "relation_type": "legally_relevant_to", "direction": "directed",
+    "support": ["Article 11 makes the timing of alleged conduct legally relevant to whether ICC temporal jurisdiction can exist."],
+    "counterevidence": ["Temporal fit alone does not establish territorial or personal jurisdiction, admissibility, crime elements, responsibility, or guilt."],
+    "alternative_explanations": ["jurisdiction may arise through a later state-party date subject to the Statute","article 12(3) acceptance may alter the jurisdictional pathway","another tribunal or domestic jurisdiction may be relevant instead"],
+    "dimensions": {"temporal":1,"geographic":0.5,"semantic":0.96,"identity":0.5,"provenance":0.98}, "confidence": 0.9,
+    "epistemic_status": "SUPPORTED", "sources": ["https://www.icc-cpi.int/sites/default/files/2025-05/Rome-Statute-EN-2025.pdf"],
+    "notes": "LAW endpoint is canonical in AWS dev. The EVENT remains intentionally hypothetical/candidate; this fixture tests applicability logic only and must never be rendered as a court finding or guilt determination."
+  }]
 }
