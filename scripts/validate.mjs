@@ -8,13 +8,14 @@ const ownerByDomain = {
   PERSON: "rocksoul-superhero",
   TEXT: "rocksoul-rgbl",
   LAW: "rocksoul-aws",
+  PERSPECTIVE: "rocksoul-jizz",
 }
 const relationTypes = new Set([
-  "attests","witnessed_by","describes","corresponds_to","temporally_aligns_with",
-  "geographically_aligns_with","textually_parallels","legally_relevant_to","contradicts",
-  "supports","weakens","derived_from","transmitted_by","alternative_to",
+  "attests", "witnessed_by", "describes", "corresponds_to", "temporally_aligns_with",
+  "geographically_aligns_with", "textually_parallels", "legally_relevant_to", "contradicts",
+  "supports", "weakens", "derived_from", "transmitted_by", "alternative_to",
 ])
-const epistemicStates = new Set(["SUPPORTED","PARTIAL","DISPUTED","UNRESOLVED","CONTRADICTED","INDETERMINATE"])
+const epistemicStates = new Set(["SUPPORTED", "PARTIAL", "DISPUTED", "UNRESOLVED", "CONTRADICTED", "INDETERMINATE"])
 const resolutionStates = new Set(["canonical", "candidate"])
 const guardedStates = new Set(["PARTIAL", "DISPUTED", "UNRESOLVED", "CONTRADICTED", "INDETERMINATE"])
 
@@ -30,9 +31,7 @@ if (!files.length) failures.push("no correlation cases found")
 function checkRef(ref, label, file) {
   if (!ref || typeof ref !== "object") return failures.push(`${file}: ${label} missing`)
   if (!ownerByDomain[ref.domain]) failures.push(`${file}: ${label} invalid domain ${ref.domain}`)
-  else if (ownerByDomain[ref.domain] !== ref.repository) {
-    failures.push(`${file}: ${label} ownership mismatch ${ref.domain} -> ${ref.repository}; expected ${ownerByDomain[ref.domain]}`)
-  }
+  else if (ownerByDomain[ref.domain] !== ref.repository) failures.push(`${file}: ${label} ownership mismatch ${ref.domain} -> ${ref.repository}; expected ${ownerByDomain[ref.domain]}`)
   if (!ref.record_id || typeof ref.record_id !== "string") failures.push(`${file}: ${label} record_id missing`)
   const resolution = ref.resolution ?? "canonical"
   if (!resolutionStates.has(resolution)) failures.push(`${file}: ${label} invalid resolution ${resolution}`)
@@ -56,9 +55,7 @@ for (const file of files) {
     checkRef(edge.source_ref, "source_ref", file)
     checkRef(edge.target_ref, "target_ref", file)
 
-    if (edge.source_ref?.repository === edge.target_ref?.repository && edge.source_ref?.record_id === edge.target_ref?.record_id) {
-      failures.push(`${file}: self-referential edge ${edge.id}`)
-    }
+    if (edge.source_ref?.repository === edge.target_ref?.repository && edge.source_ref?.record_id === edge.target_ref?.record_id) failures.push(`${file}: self-referential edge ${edge.id}`)
     if (!relationTypes.has(edge.relation_type)) failures.push(`${file}: invalid relation_type ${edge.relation_type}`)
     if (!["directed", "undirected"].includes(edge.direction)) failures.push(`${file}: invalid direction ${edge.direction}`)
     if (!Array.isArray(edge.support) || edge.support.length === 0) failures.push(`${file}: ${edge.id} support must be non-empty array`)
@@ -73,26 +70,18 @@ for (const file of files) {
       if (typeof value !== "number" || value < 0 || value > 1) failures.push(`${file}: ${edge.id} dimension ${key} outside 0..1`)
     }
 
-    if (guardedStates.has(edge.epistemic_status) && edge.counterevidence.length === 0 && edge.alternative_explanations.length === 0) {
-      failures.push(`${file}: ${edge.id} ${edge.epistemic_status} requires counterevidence or alternative explanations`)
-    }
-    if (edge.epistemic_status === "SUPPORTED" && edge.confidence < 0.5) {
-      failures.push(`${file}: ${edge.id} SUPPORTED confidence must be >= 0.5`)
-    }
+    if (guardedStates.has(edge.epistemic_status) && edge.counterevidence.length === 0 && edge.alternative_explanations.length === 0) failures.push(`${file}: ${edge.id} ${edge.epistemic_status} requires counterevidence or alternative explanations`)
+    if (edge.epistemic_status === "SUPPORTED" && edge.confidence < 0.5) failures.push(`${file}: ${edge.id} SUPPORTED confidence must be >= 0.5`)
     if (edge.relation_type === "legally_relevant_to") {
       const domains = new Set([edge.source_ref?.domain, edge.target_ref?.domain])
       if (!domains.has("LAW")) failures.push(`${file}: ${edge.id} legal relevance edge must include LAW`)
-      if (!(edge.notes ?? "").toLowerCase().match(/court|guilt|liability|judgment|applicability/)) {
-        failures.push(`${file}: ${edge.id} LAW edge must state a legal-boundary note`)
-      }
+      if (!(edge.notes ?? "").toLowerCase().match(/court|guilt|liability|judgment|applicability/)) failures.push(`${file}: ${edge.id} LAW edge must state a legal-boundary note`)
     }
-    if ((edge.source_ref?.resolution === "candidate" || edge.target_ref?.resolution === "candidate") && !(edge.notes ?? "").toLowerCase().includes("candidate") && !record.status.includes("candidate")) {
-      failures.push(`${file}: ${edge.id} candidate reference must be visible in case status or notes`)
-    }
+    if ((edge.source_ref?.resolution === "candidate" || edge.target_ref?.resolution === "candidate") && !(edge.notes ?? "").toLowerCase().includes("candidate") && !record.status.includes("candidate")) failures.push(`${file}: ${edge.id} candidate reference must be visible in case status or notes`)
   }
 }
 
-for (const domain of ["STORY", "EVENT", "PERSON", "TEXT", "LAW"]) {
+for (const domain of ["STORY", "EVENT", "PERSON", "TEXT", "LAW", "PERSPECTIVE"]) {
   if (!coverage.has(domain)) failures.push(`corpus missing ${domain} coverage`)
 }
 if (files.length < 5) failures.push(`golden corpus requires at least 5 cases; found ${files.length}`)
