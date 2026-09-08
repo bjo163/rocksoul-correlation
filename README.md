@@ -12,10 +12,11 @@ A public, provenance-first correlation layer for connecting **STORY × EVENT × 
 
 ![Visibility](https://img.shields.io/badge/visibility-PUBLIC-2E8B57)
 ![Role](https://img.shields.io/badge/role-CORRELATION-B43A32)
-![Method](https://img.shields.io/badge/method-provenance--first-111111)
+![Corpus](https://img.shields.io/badge/golden%20corpus-5%20cases-111111)
+![Coverage](https://img.shields.io/badge/domains-5%2F5-2E8B57)
 ![Runtime](https://img.shields.io/badge/runtime-Node.js%2022-3C873A)
 
-[Architecture](docs/ARCHITECTURE.md) · [Schema](schemas/correlation-edge.schema.json) · [Golden case](data/cases/jerusalem-70.json) · [Validation](#validation)
+[Architecture](docs/ARCHITECTURE.md) · [Golden Corpus](docs/GOLDEN-CORPUS.md) · [Schema](schemas/correlation-edge.schema.json) · [Contributing](CONTRIBUTING.md) · [Validation](#validation)
 
 </div>
 
@@ -27,7 +28,7 @@ A similarity is not causation.
 A temporal match is not identity.  
 A textual parallel is not fulfillment.  
 A witness is not infallible.  
-A legal relation is not a moral verdict.  
+A legal relation is not a court judgment.  
 A high-confidence edge is still an explainable claim with provenance.
 
 ## Ecosystem role
@@ -39,7 +40,9 @@ flowchart LR
     P["SUPERHERO\nPERSON"] --> C
     T["RGBL\nTEXT"] --> C
     L["AWS\nLAW"] --> C
-    C --> W["WEB / CRAYON / FUTURE MIZAN"]
+    C --> W["WEB"]
+    C --> R["CRAYON"]
+    C -. reviewed graph .-> Z["FUTURE MIZAN"]
 ```
 
 | Domain | Canonical owner | Correlation responsibility |
@@ -55,7 +58,7 @@ flowchart LR
 
 ### **CORRELATION ≠ CAUSATION**
 
-Every edge must state **what kind of relationship is claimed, what supports it, what weakens it, and what remains uncertain**.
+Every edge states **what relationship is claimed, what supports it, what weakens it, what alternatives remain, and how certain the relation is**.
 
 ## Edge model
 
@@ -65,11 +68,10 @@ CORRELATION EDGE
 ├── source_ref
 │   ├── repository
 │   ├── domain
-│   └── record_id
+│   ├── record_id
+│   └── resolution      canonical | candidate
 ├── target_ref
-│   ├── repository
-│   ├── domain
-│   └── record_id
+│   └── ...
 ├── relation_type
 ├── direction
 ├── support
@@ -87,25 +89,27 @@ CORRELATION EDGE
 └── notes
 ```
 
-### Initial relation vocabulary
+### Reference resolution
+
+`canonical` means the owning repository has already minted the source record. `candidate` means the real-world relationship is worth modeling but the owning repository has not yet published the stable record. Candidate bindings remain visibly non-canonical until owner-repo promotion.
+
+### Relation vocabulary
 
 `attests` · `witnessed_by` · `describes` · `corresponds_to` · `temporally_aligns_with` · `geographically_aligns_with` · `textually_parallels` · `legally_relevant_to` · `contradicts` · `supports` · `weakens` · `derived_from` · `transmitted_by` · `alternative_to`
 
-The vocabulary is intentionally bounded. New relation types should be added only when an existing type cannot describe a real case without semantic distortion.
+New relation types are added only when an existing type would materially distort a real case.
 
 ## Correlation dimensions
 
-Correlation is not one opaque number. Each edge may expose independent dimensions:
-
 ```text
-TEMPORAL      how well timing aligns
-GEOGRAPHIC    how well place aligns
-SEMANTIC      how closely meanings correspond
-IDENTITY      whether records plausibly refer to the same entity
-PROVENANCE    how independent / traceable the evidence chain is
+TEMPORAL      timing alignment
+GEOGRAPHIC    place alignment
+SEMANTIC      meaning correspondence
+IDENTITY      entity-resolution strength
+PROVENANCE    traceability / independence of evidence
 ```
 
-A combined confidence may be stored for ranking and presentation, but it must never hide the dimension-level evidence.
+A combined confidence is useful for ranking and presentation, but never replaces the dimension-level trail.
 
 ## Epistemic states
 
@@ -118,68 +122,64 @@ CONTRADICTED
 INDETERMINATE
 ```
 
-These are **edge states**, not verdicts on people, traditions, religions, cultures, or entire repositories.
+These are **edge states**, not verdicts on people, traditions, religions, cultures, institutions, or entire repositories.
 
-## Golden case — Jerusalem 70 CE
+## Five-case golden corpus
 
-The first integration case connects existing domain ownership without duplicating canonical objects:
+| Case | Main regression guard |
+|---|---|
+| **Jerusalem / Second Temple, 70 CE** | correspondence ≠ supernatural fulfillment |
+| **Lindow Man** | vivid ritual theory ≠ exclusive explanation |
+| **Bath curse tablets** | modern category ≠ single recoverable motive |
+| **Oseberg women** | person evidence ≠ invented historical identity |
+| **ICC temporal jurisdiction** | legal relevance ≠ jurisdiction/guilt judgment |
 
-```text
-RGBL TEXT
-Mark 13:2
-    ↓ corresponds_to
-MFTL STORY
-Temple-destruction prediction narrative
-    ↓ corresponds_to
-LEGEND EVENT
-Jerusalem / Second Temple destruction, 70 CE
-    ↑ witnessed_by
-SUPERHERO PERSON
-Flavius Josephus
-```
+Together they exercise **STORY · EVENT · PERSON · TEXT · LAW** and both `canonical` and `candidate` reference semantics.
 
-AWS may attach a legal relation only when a real legal question exists. **The graph preserves correspondence without converting correspondence into supernatural fulfillment.**
-
-See [`data/cases/jerusalem-70.json`](data/cases/jerusalem-70.json).
+See [`docs/GOLDEN-CORPUS.md`](docs/GOLDEN-CORPUS.md).
 
 ## Public transparency contract
 
-This repository is public because its job is to make reasoning inspectable.
+Public correlation records expose:
 
-Public records should expose:
-
-- canonical foreign references;
+- source-domain references and resolution state;
 - relation semantics;
 - provenance;
-- supporting evidence;
+- support;
 - counterevidence;
 - alternative explanations;
 - uncertainty;
-- confidence dimensions;
+- five confidence dimensions;
 - machine-validation state.
 
 Private research notes, credentials, unpublished submissions, moderation data, and operational workspace state belong in `rocksoul-crayon` / `rocksoul-platform`, not here.
 
 ## Design contract
 
-Visual language comes from [`rocksoul-assets`](https://github.com/bjo163/rocksoul-assets). Implementation components should come from [`rocksoul-ui`](https://github.com/bjo163/rocksoul-ui).
+Visual language comes from [`rocksoul-assets`](https://github.com/bjo163/rocksoul-assets). Implementation components come from [`rocksoul-ui`](https://github.com/bjo163/rocksoul-ui).
 
-Correlation views should use the canonical graph, evidence-matrix, provenance, timeline, and data-viz grammar from `rocksoul-assets/moonwitness/data-viz/` rather than inventing a parallel style.
+Correlation surfaces should reuse canonical node-link graph, evidence matrix, provenance, timeline, graph-node, edge-style, annotation, and status grammar from `rocksoul-assets/moonwitness/data-viz/`.
 
 ## Repository atlas
 
 ```text
 rocksoul-correlation/
-├── data/
-│   └── cases/                 reviewed cross-domain correlation cases
+├── data/cases/
+│   ├── jerusalem-70.json
+│   ├── lindow-man.json
+│   ├── bath-curse-tablets.json
+│   ├── oseberg-women.json
+│   └── icc-temporal-jurisdiction.json
 ├── docs/
-│   └── ARCHITECTURE.md        ownership, semantics and guardrails
+│   ├── ARCHITECTURE.md
+│   └── GOLDEN-CORPUS.md
 ├── schemas/
 │   └── correlation-edge.schema.json
 ├── scripts/
-│   └── validate.mjs           structural + semantic validation
+│   └── validate.mjs
 ├── .github/workflows/
 │   └── validate.yml
+├── CONTRIBUTING.md
 ├── package.json
 └── README.md
 ```
@@ -187,21 +187,40 @@ rocksoul-correlation/
 ## Validation
 
 ```bash
-npm install
 npm run validate
 ```
 
-Validation checks:
+CI verifies:
 
-1. required correlation fields;
-2. domain/repository ownership consistency;
-3. stable edge identifiers;
-4. bounded relation vocabulary;
-5. confidence values in `0..1`;
-6. no self-referential source/target edge;
-7. unique edge IDs;
-8. evidence / counterevidence arrays;
-9. golden-case domain coverage.
+1. domain → repository ownership consistency;
+2. unique stable case and edge IDs;
+3. bounded relation vocabulary;
+4. non-self-referential edges;
+5. required support and inspectable sources;
+6. explicit candidate/canonical semantics;
+7. counterevidence/alternatives for guarded epistemic states;
+8. five independent dimension values in `0..1`;
+9. LAW-edge legal-boundary notes;
+10. minimum five-case corpus and full five-domain coverage;
+11. canonical Jerusalem foundation regression coverage.
+
+## Candidate → canonical workflow
+
+```text
+REAL-WORLD LEAD
+      ↓
+CANDIDATE EDGE
+      ↓
+OWNER REPO MINTS RECORD
+      ↓
+REFERENCE PROMOTION
+      ↓
+REVALIDATE EVIDENCE + STATUS
+      ↓
+CANONICAL CORRELATION
+```
+
+Correlation never mints another domain's canonical record on its behalf.
 
 ## Boundary with future Mizan
 
@@ -209,13 +228,15 @@ Validation checks:
 CORRELATION
   describes relationships
   exposes evidence
+  exposes counterevidence
+  preserves alternatives
   exposes uncertainty
         ↓
 MIZAN
   may later weigh a reviewed graph
 ```
 
-`rocksoul-correlation` must remain useful **even if no Mizan engine exists**.
+`rocksoul-correlation` remains independently useful **even if no Mizan engine exists**.
 
 ---
 
