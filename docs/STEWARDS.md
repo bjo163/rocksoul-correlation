@@ -80,3 +80,26 @@ SIMILARITY ≠ REVIEWED RELATIONSHIP
 HIGH-FREQUENCY RESEARCH ≠ HIGH-FREQUENCY EDGE CREATION
 RELATIONSHIP OWNER ≠ CONNECTED RECORD OWNER
 ```
+
+
+## RELATIONSHIP issue-first review
+
+Although Correlation consumes no scheduled intelligence slot, it follows the same ROCKSOUL Research Issue Contract v1 operational gate:
+
+```text
+domain evidence / relation proposal
+        ↓
+[RESEARCH] RELATIONSHIP · ...
+        ↓
+support + counterevidence + alternatives
+        ↓
+qualified-ref / freshness verification
+        ↓
+reviewable edge
+        ↓
+canonical RELATIONSHIP
+        ↓
+issue merged / closed
+```
+
+The issue uses the Correlation hero from `rocksoul-assets/main`. Similarity, shared names, shared URLs, embeddings and co-occurrence never bypass this review.
