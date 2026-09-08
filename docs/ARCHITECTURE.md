@@ -2,7 +2,7 @@
 
 ## Purpose
 
-`rocksoul-correlation` is the public cross-domain evidence graph for MoonWitness × Rocksoul. It connects canonical foreign records from STORY, EVENT, PERSON, TEXT, and LAW while preserving provenance, disagreement, and uncertainty.
+`rocksoul-correlation` is the public cross-domain evidence graph for MoonWitness × Rocksoul. It connects records and candidate bindings across STORY, EVENT, PERSON, TEXT, and LAW while preserving provenance, disagreement, uncertainty, and source ownership.
 
 ## Ownership contract
 
@@ -15,13 +15,38 @@
 | LAW | `rocksoul-aws` |
 | CORRELATION | `rocksoul-correlation` |
 
-Correlation owns only the edge and its analysis metadata. It must not duplicate or silently fork canonical domain records.
+Correlation owns only the edge and its analysis metadata. It must not duplicate, mint on behalf of, or silently fork canonical domain records.
+
+## Reference lifecycle
+
+Every foreign reference is either:
+
+- `canonical` — stable source record already published by the owning repository;
+- `candidate` — proposed owner-repo binding for a real-world case that still requires the source repository to mint/review the record.
+
+Candidate status is part of provenance. It is not an implementation detail and must remain visible to consumers.
+
+```text
+REAL-WORLD LEAD
+      ↓
+CANDIDATE BINDING
+      ↓
+OWNER REPOSITORY REVIEW
+      ↓
+STABLE RECORD ID
+      ↓
+CORRELATION PROMOTION
+      ↓
+REVALIDATE EDGE
+```
+
+Correlation must never make a candidate look canonical merely to produce a complete-looking graph.
 
 ## Edge semantics
 
-An edge is a claim about the relationship between two foreign records. Every edge must preserve:
+An edge is a claim about the relationship between two foreign records or candidate bindings. Every edge preserves:
 
-- source and target foreign references;
+- source and target references plus resolution state;
 - explicit relation type;
 - directionality;
 - supporting observations;
@@ -41,28 +66,23 @@ No score may imply moral worth, sanctity, guilt, innocence, religious truth, or 
 ## Correlation dimensions
 
 ### Temporal
-
 How compatible are the dates, time ranges, or sequencing of the two records?
 
 ### Geographic
-
 How compatible are the places, regions, routes, or spatial claims?
 
 ### Semantic
-
 How closely does the meaning/content under comparison correspond?
 
 ### Identity
-
 How plausible is it that the records refer to the same actor, object, event, text unit, place, or legal subject where identity is relevant?
 
 ### Provenance
-
 How traceable and independent is the evidence chain connecting the records?
 
 ## Counterevidence is first-class
 
-A mature edge does not contain only reasons to believe the relation. Counterevidence and alternative explanations must remain visible and machine-readable.
+A mature edge does not contain only reasons to believe the relation. Counterevidence and alternative explanations remain visible and machine-readable.
 
 ```text
 CLAIMED RELATION
@@ -73,11 +93,20 @@ CLAIMED RELATION
 └── unresolved uncertainty
 ```
 
+Guarded states (`PARTIAL`, `DISPUTED`, `UNRESOLVED`, `CONTRADICTED`, `INDETERMINATE`) must expose counterevidence and/or alternatives.
+
+## Legal boundary
+
+A `legally_relevant_to` edge may describe applicability, jurisdictional predicates, temporal/legal fit, or another bounded legal relation. It must never be presented as a court finding, guilt determination, liability judgment, or complete legal conclusion.
+
+LAW remains canonically owned by `rocksoul-aws`.
+
 ## Public/private boundary
 
 Public:
 
-- reviewed correlation edges;
+- reviewed canonical edges;
+- visibly marked candidate edges;
 - source references;
 - evidence summaries;
 - counterevidence;
@@ -98,7 +127,7 @@ Private/operator scope belongs in `rocksoul-crayon` or `rocksoul-platform` until
 
 ## Consumer model
 
-`rocksoul-web` consumes public graph projections. `rocksoul-crayon` consumes richer operator projections. `rocksoul-ui` provides the visual/component grammar. `rocksoul-assets` remains the visual source of truth.
+`rocksoul-web` consumes public graph projections. `rocksoul-crayon` consumes richer operator projections and manages candidate-review workflows. `rocksoul-ui` provides the visual/component grammar. `rocksoul-assets` remains the visual source of truth.
 
 A future Mizan engine may consume reviewed correlation graphs, but Correlation must not pre-compute or masquerade as the Mizan verdict layer.
 
@@ -111,7 +140,8 @@ Do not:
 - infer intent from outcome alone;
 - treat witness proximity as infallibility;
 - flatten disputed scholarship into a single certainty score;
-- invent missing canonical identifiers;
+- invent a canonical identifier and pretend the owner minted it;
 - copy entire foreign records into this repository;
 - hide counterevidence to improve a score;
-- use correlation confidence as a moral score.
+- use correlation confidence as a moral score;
+- turn legal relevance into guilt or judgment.
