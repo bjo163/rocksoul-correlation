@@ -3,21 +3,16 @@
   "title": "Bath curse tablets — divine retribution, private prayer, or restitution ritual?",
   "status": "candidate-reviewed",
   "description": "Tests how material evidence and interpreted ritual intent are linked without treating reconstructed motive as direct fact.",
-  "edges": [
-    {
-      "id": "CORR-BATH-EVENT-STORY-001",
-      "source_ref": {"repository":"rocksoul-legend","domain":"EVENT","record_id":"EVT-BATH-CURSE-TABLETS","resolution":"candidate"},
-      "target_ref": {"repository":"rocksoul-mftl","domain":"STORY","record_id":"STORY-BATH-RESTITUTION-RITUAL","resolution":"candidate"},
-      "relation_type": "supports",
-      "direction": "directed",
-      "support": ["The tablets are inscribed private prayers from people reporting losses or injustices and asking Sulis Minerva for redress or revenge."],
-      "counterevidence": ["The modern label curse tablet can over-compress distinct motives such as restitution, punishment, prayer, and ritualized complaint."],
-      "alternative_explanations": ["private prayer for restitution","ritualized legal complaint","revenge petition","mixed devotional and coercive practice"],
-      "dimensions": {"temporal":0.85,"geographic":1,"semantic":0.88,"identity":0.7,"provenance":0.94},
-      "confidence": 0.78,
-      "epistemic_status": "PARTIAL",
-      "sources": ["https://www.romanbaths.co.uk/roman-curse-tablets"],
-      "notes": "This edge links a material corpus to competing descriptions of ritual intent; it does not assert that every tablet has the same purpose."
-    }
-  ]
+  "edges": [{
+    "id": "CORR-BATH-EVENT-STORY-001",
+    "source_ref": {"repository":"rocksoul-legend","domain":"EVENT","record_id":"EVT-BATH-CURSE-TABLETS","resolution":"canonical"},
+    "target_ref": {"repository":"rocksoul-mftl","domain":"STORY","record_id":"STORY-BATH-RESTITUTION-RITUAL","resolution":"candidate"},
+    "relation_type": "supports", "direction": "directed",
+    "support": ["The tablets are inscribed private prayers from people reporting losses or injustices and asking Sulis Minerva for redress or revenge."],
+    "counterevidence": ["The modern label curse tablet can over-compress distinct motives such as restitution, punishment, prayer, and ritualized complaint."],
+    "alternative_explanations": ["private prayer for restitution","ritualized legal complaint","revenge petition","mixed devotional and coercive practice"],
+    "dimensions": {"temporal":0.85,"geographic":1,"semantic":0.88,"identity":0.7,"provenance":0.94}, "confidence": 0.78,
+    "epistemic_status": "PARTIAL", "sources": ["https://www.romanbaths.co.uk/roman-curse-tablets"],
+    "notes": "EVENT is canonical in LEGEND. STORY remains candidate; the edge does not assert that every tablet has the same purpose."
+  }]
 }
