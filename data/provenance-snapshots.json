@@ -1,11 +1,11 @@
 {
-  "generated_at": "2026-09-08T09:16:00+07:00",
+  "generated_at": "2026-09-08T03:08:00Z",
   "policy": "Owner repository movement marks dependent correlation references stale-for-review; it does not invalidate them automatically.",
   "repositories": {
     "rocksoul-mftl": {
       "domain": "STORY",
       "branch": "main",
-      "observed_head_sha": "5ce67c45ef8ded2b1bad657749bf8bd7ff47b4ad"
+      "observed_head_sha": "5ed220b12416d8c22804ef036ef97bb70a29a97b"
     },
     "rocksoul-legend": {
       "domain": "EVENT",

@@ -11,6 +11,8 @@ import {
   provenanceForNode,
 } from "../src/runtime.mjs"
 import { auditFreshness, loadFreshnessSnapshot } from "../src/freshness.mjs"
+import { parseQualifiedReference, resolveQualifiedReference, toQualifiedReference } from "../src/qualified-ref.mjs"
+import { buildReanalysisQueue } from "../src/reanalysis.mjs"
 import { createCorrelationServer } from "../src/server.mjs"
 
 test("runtime exposes the five golden cases", async () => {
@@ -130,5 +132,52 @@ test("HTTP API serves query traversal and provenance endpoints", async () => {
     assert.equal(missing.status, 404)
   } finally {
     await new Promise((resolve) => server.close(resolve))
+  }
+})
+
+
+test("qualified reference protocol preserves canonical owner identity", async () => {
+  const ref = parseQualifiedReference("mftl:MYTH-JERUSALEM-TEMPLE-DESTRUCTION-PROPHECY-000001")
+  assert.equal(ref.repository,"rocksoul-mftl")
+  assert.equal(ref.domain,"STORY")
+  assert.equal(toQualifiedReference({repository:"rocksoul-rgbl",record_id:"mw:passage:sblgnt:v1-2:mark:13:2"}),"rgbl:mw:passage:sblgnt:v1-2:mark:13:2")
+  assert.equal(parseQualifiedReference("rocksoul-superhero:PER-JERUSALEM-FLAVIUS-JOSEPHUS").qualified_ref,"superhero:PER-JERUSALEM-FLAVIUS-JOSEPHUS")
+  const resolved = await resolveQualifiedReference(ref.qualified_ref)
+  assert.equal(resolved.observed_owner_head_sha.length,40)
+})
+
+test("Jerusalem foundation resolves current canonical STORY and EVENT IDs", async () => {
+  const item = await getCase("CORR-CASE-JERUSALEM-70")
+  const refs = item.edges.flatMap(edge => [edge.source_ref,edge.target_ref])
+  assert.ok(refs.some(ref => ref.record_id === "MYTH-JERUSALEM-TEMPLE-DESTRUCTION-PROPHECY-000001"))
+  assert.ok(refs.some(ref => ref.record_id === "EVT-JERUSALEM-SECOND-TEMPLE-DESTRUCTION-70"))
+  assert.ok(!refs.some(ref => ref.record_id === "JERUSALEM-70-TEMPLE-PREDICTION"))
+})
+
+test("reanalysis queue points to exact dependent edges when an owner moves", async () => {
+  const snapshot = await loadFreshnessSnapshot()
+  const fakeFetch = async (url) => {
+    const repo = Object.keys(snapshot.repositories).find(name => url.includes(`/${name}/`))
+    const observed = snapshot.repositories[repo].observed_head_sha
+    const sha = repo === "rocksoul-mftl" ? "new-mftl-head" : observed
+    return new Response(JSON.stringify({commit:{sha}}),{status:200,headers:{"content-type":"application/json"}})
+  }
+  const queue = await buildReanalysisQueue({fetchImpl:fakeFetch})
+  assert.ok(queue.review_item_count >= 1)
+  assert.ok(queue.items.every(item => item.affected_repositories.some(repo => repo.repository === "rocksoul-mftl")))
+})
+
+test("HTTP API resolves qualified refs", async () => {
+  const server = createCorrelationServer()
+  await new Promise(resolve => server.listen(0,"127.0.0.1",resolve))
+  const {port}=server.address()
+  try {
+    const ref=encodeURIComponent("mftl:MYTH-JERUSALEM-TEMPLE-DESTRUCTION-PROPHECY-000001")
+    const response=await fetch(`http://127.0.0.1:${port}/api/v1/correlation/refs/resolve?ref=${ref}`)
+    assert.equal(response.status,200)
+    const body=await response.json()
+    assert.equal(body.data.owner_repository,"rocksoul-mftl")
+  } finally {
+    await new Promise(resolve => server.close(resolve))
   }
 })
