@@ -1,6 +1,16 @@
 import assert from "node:assert/strict"
 import test from "node:test"
-import { getCase, graph, listCases, listEdges } from "../src/runtime.mjs"
+import {
+  findPath,
+  getCase,
+  graph,
+  listCases,
+  listEdges,
+  neighbors,
+  provenanceForEdge,
+  provenanceForNode,
+} from "../src/runtime.mjs"
+import { auditFreshness, loadFreshnessSnapshot } from "../src/freshness.mjs"
 import { createCorrelationServer } from "../src/server.mjs"
 
 test("runtime exposes the five golden cases", async () => {
@@ -19,13 +29,20 @@ test("case lookup preserves evidence and uncertainty", async () => {
   assert.ok(item.edges.some((edge) => edge.alternative_explanations.length > 0))
 })
 
-test("edge filters are deterministic", async () => {
+test("query filters search both metadata and evidence text", async () => {
   const law = await listEdges({ domain: "LAW" })
   assert.ok(law.length >= 1)
   assert.ok(law.every((edge) => edge.source_ref.domain === "LAW" || edge.target_ref.domain === "LAW"))
+
   const supported = await listEdges({ epistemic_status: "SUPPORTED", min_confidence: "0.8" })
   assert.ok(supported.length >= 1)
   assert.ok(supported.every((edge) => edge.epistemic_status === "SUPPORTED" && edge.confidence >= 0.8))
+
+  const textSearch = await listEdges({ q: "supernatural fulfillment" })
+  assert.ok(textSearch.some((edge) => edge.case_id === "CORR-CASE-JERUSALEM-70"))
+
+  const caseSearch = await listCases({ q: "temple" })
+  assert.ok(caseSearch.some((item) => item.case_id === "CORR-CASE-JERUSALEM-70"))
 })
 
 test("graph deduplicates canonical nodes", async () => {
@@ -35,17 +52,81 @@ test("graph deduplicates canonical nodes", async () => {
   assert.equal(new Set(result.nodes.map((node) => node.id)).size, result.nodes.length)
 })
 
-test("HTTP API serves public read-only graph", async () => {
+test("bounded neighborhood traversal never exceeds requested limits", async () => {
+  const full = await graph("CORR-CASE-JERUSALEM-70")
+  const root = full.nodes[0].id
+  const result = await neighbors(root, { depth: 99, max_nodes: 2, direction: "both" })
+  assert.ok(result)
+  assert.equal(result.depth, 3)
+  assert.ok(result.nodes.length <= 2)
+  assert.equal(result.truncated, true)
+})
+
+test("bounded path traversal returns an inspectable edge trail", async () => {
+  const full = await graph("CORR-CASE-JERUSALEM-70")
+  const source = full.edges[0].source
+  const target = full.edges.at(-1).target
+  const result = await findPath(source, target, { max_depth: 6 })
+  assert.ok(result)
+  assert.ok(result.nodes.length >= 2)
+  assert.equal(result.nodes[0], source)
+  assert.equal(result.nodes.at(-1), target)
+  assert.ok(result.edges.length <= 6)
+})
+
+test("provenance resolves node and edge owners without copying canonical records", async () => {
+  const full = await graph("CORR-CASE-JERUSALEM-70")
+  const node = await provenanceForNode(full.nodes[0].id)
+  assert.ok(node)
+  assert.ok(node.owner_repository.startsWith("rocksoul-"))
+  assert.ok(node.owner_url.includes(node.owner_repository))
+  assert.ok(node.observed_head_sha)
+
+  const edge = await provenanceForEdge(full.edges[0].id)
+  assert.ok(edge)
+  assert.ok(edge.source.owner_repository)
+  assert.ok(edge.target.owner_repository)
+})
+
+test("freshness audit marks upstream movement stale-for-review instead of invalid", async () => {
+  const snapshot = await loadFreshnessSnapshot()
+  const fakeFetch = async (url) => {
+    const repo = Object.keys(snapshot.repositories).find((name) => url.includes(`/${name}/`))
+    const observed = snapshot.repositories[repo].observed_head_sha
+    const sha = repo === "rocksoul-mftl" ? "changed-head" : observed
+    return new Response(JSON.stringify({ commit: { sha } }), { status: 200, headers: { "content-type": "application/json" } })
+  }
+  const result = await auditFreshness({ fetchImpl: fakeFetch })
+  assert.equal(result.repositories.length, 5)
+  assert.equal(result.counts.STALE_REVIEW_REQUIRED, 1)
+  assert.equal(result.repositories.find((item) => item.repository === "rocksoul-mftl").freshness, "STALE_REVIEW_REQUIRED")
+})
+
+test("HTTP API serves query traversal and provenance endpoints", async () => {
   const server = createCorrelationServer()
   await new Promise((resolve) => server.listen(0, "127.0.0.1", resolve))
   const address = server.address()
+  const base = `http://127.0.0.1:${address.port}`
   try {
-    const response = await fetch(`http://127.0.0.1:${address.port}/api/v1/correlation/cases`)
+    const response = await fetch(`${base}/api/v1/correlation/cases?q=temple`)
     assert.equal(response.status, 200)
     const body = await response.json()
-    assert.equal(body.data.length, 5)
+    assert.ok(body.data.some((item) => item.case_id === "CORR-CASE-JERUSALEM-70"))
 
-    const missing = await fetch(`http://127.0.0.1:${address.port}/api/v1/correlation/cases/DOES-NOT-EXIST`)
+    const full = await graph("CORR-CASE-JERUSALEM-70")
+    const nodeId = encodeURIComponent(full.nodes[0].id)
+    const neighborhood = await fetch(`${base}/api/v1/correlation/nodes/${nodeId}/neighbors?depth=2&max_nodes=10`)
+    assert.equal(neighborhood.status, 200)
+
+    const provenance = await fetch(`${base}/api/v1/correlation/nodes/${nodeId}/provenance`)
+    assert.equal(provenance.status, 200)
+
+    const source = encodeURIComponent(full.edges[0].source)
+    const target = encodeURIComponent(full.edges.at(-1).target)
+    const pathResponse = await fetch(`${base}/api/v1/correlation/path?source=${source}&target=${target}&max_depth=6`)
+    assert.equal(pathResponse.status, 200)
+
+    const missing = await fetch(`${base}/api/v1/correlation/cases/DOES-NOT-EXIST`)
     assert.equal(missing.status, 404)
   } finally {
     await new Promise((resolve) => server.close(resolve))
