@@ -3,21 +3,17 @@
   "title": "Lindow Man — ritual sacrifice, execution, or violent crime?",
   "status": "candidate-reviewed",
   "description": "Tests how correlation preserves multiple competing interpretations around a single archaeological event without collapsing uncertainty.",
-  "edges": [
-    {
-      "id": "CORR-LINDOW-EVENT-STORY-001",
-      "source_ref": {"repository":"rocksoul-legend","domain":"EVENT","record_id":"EVT-LINDOW-MAN-IRON-AGE","resolution":"candidate"},
-      "target_ref": {"repository":"rocksoul-mftl","domain":"STORY","record_id":"STORY-LINDOW-RITUAL-SACRIFICE","resolution":"candidate"},
-      "relation_type": "supports",
-      "direction": "directed",
-      "support": ["The body shows multiple injuries and a sinew around the neck; some investigators have interpreted the violent death as ritual sacrifice."],
-      "counterevidence": ["Alternative forensic interpretation treats some injuries as post-recovery or explains the sinew as a necklace; violent robbery or execution remain possible."],
-      "alternative_explanations": ["violent robbery","execution","ritual killing without recoverable motive"],
-      "dimensions": {"temporal":0.7,"geographic":0.9,"semantic":0.72,"identity":0.95,"provenance":0.9},
-      "confidence": 0.58,
-      "epistemic_status": "DISPUTED",
-      "sources": ["https://www.britishmuseum.org/collection/object/H_1984-1002-1","https://www.britishmuseum.org/sites/default/files/2019-11/Regarding-the-Dead_02102015.pdf"],
-      "notes": "Candidate bindings only; the correlation is public, while canonical source records must be minted by their owning repositories."
-    }
-  ]
+  "edges": [{
+    "id": "CORR-LINDOW-EVENT-STORY-001",
+    "source_ref": {"repository":"rocksoul-legend","domain":"EVENT","record_id":"EVT-LINDOW-MAN-IRON-AGE","resolution":"canonical"},
+    "target_ref": {"repository":"rocksoul-mftl","domain":"STORY","record_id":"STORY-LINDOW-RITUAL-SACRIFICE","resolution":"candidate"},
+    "relation_type": "supports", "direction": "directed",
+    "support": ["The body shows multiple injuries and a sinew around the neck; some investigators have interpreted the violent death as ritual sacrifice."],
+    "counterevidence": ["Alternative forensic interpretation treats some injuries as post-recovery or explains the sinew as a necklace; violent robbery or execution remain possible."],
+    "alternative_explanations": ["violent robbery","execution","ritual killing without recoverable motive"],
+    "dimensions": {"temporal":0.7,"geographic":0.9,"semantic":0.72,"identity":0.95,"provenance":0.9}, "confidence": 0.58,
+    "epistemic_status": "DISPUTED",
+    "sources": ["https://www.britishmuseum.org/collection/object/H_1984-1002-1","https://www.britishmuseum.org/sites/default/files/2019-11/Regarding-the-Dead_02102015.pdf"],
+    "notes": "EVENT is now canonical in LEGEND; STORY remains candidate until MFTL publishes a stable narrative record."
+  }]
 }
