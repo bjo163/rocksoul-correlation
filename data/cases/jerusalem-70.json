@@ -1,0 +1,120 @@
+{
+  "case_id": "CORR-CASE-JERUSALEM-70",
+  "title": "Jerusalem / Second Temple destruction, 70 CE",
+  "status": "reviewed-foundation",
+  "description": "Cross-domain proof that textual, narrative, event, and person records can be linked without converting correspondence into a supernatural-fulfillment verdict.",
+  "edges": [
+    {
+      "id": "CORR-JERUSALEM-TEXT-STORY-001",
+      "source_ref": {
+        "repository": "rocksoul-rgbl",
+        "domain": "TEXT",
+        "record_id": "mw:passage:sblgnt:v1-2:mark:13:2"
+      },
+      "target_ref": {
+        "repository": "rocksoul-mftl",
+        "domain": "STORY",
+        "record_id": "JERUSALEM-70-TEMPLE-PREDICTION"
+      },
+      "relation_type": "attests",
+      "direction": "directed",
+      "support": [
+        "The RGBL passage preserves the selected textual expression used by the narrative record."
+      ],
+      "counterevidence": [],
+      "alternative_explanations": [
+        "Different textual expressions or redaction histories may affect downstream interpretation without changing passage identity."
+      ],
+      "dimensions": {
+        "temporal": 0.7,
+        "geographic": 0.8,
+        "semantic": 0.95,
+        "identity": 0.95,
+        "provenance": 0.9
+      },
+      "confidence": 0.9,
+      "epistemic_status": "SUPPORTED",
+      "sources": [
+        "rocksoul-rgbl:mw:passage:sblgnt:v1-2:mark:13:2"
+      ],
+      "notes": "This edge asserts textual attestation only."
+    },
+    {
+      "id": "CORR-JERUSALEM-STORY-EVENT-001",
+      "source_ref": {
+        "repository": "rocksoul-mftl",
+        "domain": "STORY",
+        "record_id": "JERUSALEM-70-TEMPLE-PREDICTION"
+      },
+      "target_ref": {
+        "repository": "rocksoul-legend",
+        "domain": "EVENT",
+        "record_id": "EVT-JERUSALEM-TEMPLE-70CE"
+      },
+      "relation_type": "corresponds_to",
+      "direction": "directed",
+      "support": [
+        "The narrative concerns destruction of the Jerusalem temple complex.",
+        "LEGEND independently models the historically evidenced 70 CE destruction event."
+      ],
+      "counterevidence": [
+        "Text-event correspondence alone does not establish composition date, causal dependence, or supernatural fulfillment."
+      ],
+      "alternative_explanations": [
+        "The narrative may reflect pre-event prediction, post-event framing, redaction, remembered warning traditions, or another transmission history."
+      ],
+      "dimensions": {
+        "temporal": 0.7,
+        "geographic": 1,
+        "semantic": 0.92,
+        "identity": 0.88,
+        "provenance": 0.75
+      },
+      "confidence": 0.82,
+      "epistemic_status": "PARTIAL",
+      "sources": [
+        "rocksoul-mftl:JERUSALEM-70-TEMPLE-PREDICTION",
+        "rocksoul-legend:EVT-JERUSALEM-TEMPLE-70CE"
+      ],
+      "notes": "Correspondence is preserved without a fulfillment verdict."
+    },
+    {
+      "id": "CORR-JERUSALEM-EVENT-PERSON-001",
+      "source_ref": {
+        "repository": "rocksoul-legend",
+        "domain": "EVENT",
+        "record_id": "EVT-JERUSALEM-TEMPLE-70CE"
+      },
+      "target_ref": {
+        "repository": "rocksoul-superhero",
+        "domain": "PERSON",
+        "record_id": "PER-JERUSALEM-FLAVIUS-JOSEPHUS"
+      },
+      "relation_type": "witnessed_by",
+      "direction": "directed",
+      "support": [
+        "SUPERHERO models Josephus as a close historical witness and recorder connected to the conflict and destruction."
+      ],
+      "counterevidence": [
+        "Witness proximity does not make every reported detail or interpretation infallible."
+      ],
+      "alternative_explanations": [
+        "Individual reported details may still require independent corroboration."
+      ],
+      "dimensions": {
+        "temporal": 0.98,
+        "geographic": 0.95,
+        "semantic": 0.9,
+        "identity": 0.98,
+        "provenance": 0.88
+      },
+      "confidence": 0.93,
+      "epistemic_status": "SUPPORTED",
+      "sources": [
+        "rocksoul-legend:EVT-JERUSALEM-TEMPLE-70CE",
+        "rocksoul-superhero:PER-JERUSALEM-FLAVIUS-JOSEPHUS"
+      ],
+      "notes": "Human proximity strengthens provenance but does not create a theological verdict."
+    }
+  ]
+}
