@@ -40,6 +40,8 @@ export async function resolveQualifiedReference(value,{ resolution = "canonical"
   return {
     ...parsed,
     resolution,
+    owner_repository: parsed.repository,
+    owner_domain: parsed.domain,
     owner_branch: owner?.branch ?? "main",
     observed_owner_head_sha: owner?.observed_head_sha ?? null,
     owner_url: `https://github.com/bjo163/${parsed.repository}`,
