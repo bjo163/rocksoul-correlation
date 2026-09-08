@@ -4,9 +4,10 @@ const owners = {
   superhero: { repository: "rocksoul-superhero", domain: "PERSON" },
   rgbl: { repository: "rocksoul-rgbl", domain: "TEXT" },
   aws: { repository: "rocksoul-aws", domain: "LAW" },
+  jizz: { repository: "rocksoul-jizz", domain: "PERSPECTIVE" },
 }
-const aliases = Object.fromEntries(Object.entries(owners).flatMap(([prefix,value]) => [[prefix,prefix],[value.repository,prefix]]))
-const repoToPrefix = Object.fromEntries(Object.entries(owners).map(([prefix,value]) => [value.repository,prefix]))
+const aliases = Object.fromEntries(Object.entries(owners).flatMap(([prefix, value]) => [[prefix, prefix], [value.repository, prefix]]))
+const repoToPrefix = Object.fromEntries(Object.entries(owners).map(([prefix, value]) => [value.repository, prefix]))
 
 export function toQualifiedReference(ref) {
   const prefix = repoToPrefix[ref.repository]
@@ -17,7 +18,7 @@ export function toQualifiedReference(ref) {
 export function parseQualifiedReference(value) {
   if (typeof value !== "string" || !value.includes(":")) return null
   const index = value.indexOf(":")
-  const rawPrefix = value.slice(0,index)
+  const rawPrefix = value.slice(0, index)
   const recordId = value.slice(index + 1)
   const prefix = aliases[rawPrefix]
   if (!prefix || !recordId) return null
@@ -31,7 +32,7 @@ export function parseQualifiedReference(value) {
   }
 }
 
-export async function resolveQualifiedReference(value,{ resolution = "canonical" } = {}) {
+export async function resolveQualifiedReference(value, { resolution = "canonical" } = {}) {
   const parsed = parseQualifiedReference(value)
   if (!parsed) return null
   const { loadFreshnessSnapshot } = await import("./freshness.mjs")
