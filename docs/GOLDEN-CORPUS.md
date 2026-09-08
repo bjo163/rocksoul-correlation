@@ -10,7 +10,7 @@ The golden corpus exists to exercise different epistemic failure modes, not to m
 | Oseberg women | person/event linkage with unresolved historical identity | EVENT · PERSON · STORY | PARTIAL / UNRESOLVED |
 | ICC temporal jurisdiction | legal applicability without guilt/judgment | EVENT · LAW | SUPPORTED |
 
-Together the five cases cover all canonical source domains:
+Together the five historical cases cover the original five source-domain fixtures:
 
 ```text
 STORY  ✓
@@ -19,6 +19,14 @@ PERSON ✓
 TEXT   ✓
 LAW    ✓
 ```
+
+The current machine contract also supports:
+
+```text
+PERSPECTIVE → rocksoul-jizz ✓
+```
+
+No sixth golden case is fabricated merely to satisfy a coverage counter. Add a PERSPECTIVE-bearing golden case only when it exercises a materially new correlation failure mode.
 
 ## Reference resolution
 

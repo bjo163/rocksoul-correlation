@@ -2,7 +2,7 @@
 
 ## Purpose
 
-`rocksoul-correlation` is the public cross-domain evidence graph for MoonWitness × Rocksoul. It connects records and candidate bindings across STORY, EVENT, PERSON, TEXT, and LAW while preserving provenance, disagreement, uncertainty, and source ownership.
+`rocksoul-correlation` is the public cross-domain evidence graph for MoonWitness × Rocksoul. It connects records and candidate bindings across STORY, EVENT, PERSON, TEXT, LAW, and PERSPECTIVE while preserving provenance, disagreement, uncertainty, and source ownership.
 
 ## Ownership contract
 
@@ -13,7 +13,8 @@
 | PERSON | `rocksoul-superhero` |
 | TEXT | `rocksoul-rgbl` |
 | LAW | `rocksoul-aws` |
-| CORRELATION | `rocksoul-correlation` |
+| PERSPECTIVE | `rocksoul-jizz` |
+| RELATIONSHIP | `rocksoul-correlation` |
 
 Correlation owns only the edge and its analysis metadata. It must not duplicate, mint on behalf of, or silently fork canonical domain records.
 
@@ -145,3 +146,23 @@ Do not:
 - hide counterevidence to improve a score;
 - use correlation confidence as a moral score;
 - turn legal relevance into guilt or judgment.
+
+## Steward / scheduling boundary
+
+The operational Steward topology is owned by `rocksoul-crayon`. Correlation is deliberately **event-driven** and receives no scheduled discovery Steward slot.
+
+```text
+DOMAIN DISCOVERY / REVIEW
+      ↓
+domain-owned candidate or canonical record
+      ↓
+cross-domain relationship becomes reviewable
+      ↓
+CORRELATION REVIEW
+      ↓
+reviewed RELATIONSHIP edge
+```
+
+Do not schedule a Correlation agent to hunt for relationships by similarity. Deterministic freshness checks are allowed and do not count as Steward intelligence.
+
+JIZZ may run hourly because PERSPECTIVE is high-velocity. Correlation must still wait for reviewable support, counterevidence, alternatives, and provenance before publishing an edge.

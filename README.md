@@ -8,12 +8,12 @@
 
 ### **CONNECT THE TRAILS. KEEP THE UNCERTAINTY.**
 
-A public, provenance-first correlation layer for connecting **STORY × EVENT × PERSON × TEXT × LAW** without collapsing those domains into one verdict.
+A public, provenance-first correlation layer for connecting **STORY × EVENT × PERSON × TEXT × LAW × PERSPECTIVE** without collapsing those domains into one verdict.
 
 ![Visibility](https://img.shields.io/badge/visibility-PUBLIC-2E8B57)
 ![Role](https://img.shields.io/badge/role-CORRELATION-B43A32)
 ![Corpus](https://img.shields.io/badge/golden%20corpus-5%20cases-111111)
-![Coverage](https://img.shields.io/badge/domains-5%2F5-2E8B57)
+![Supported domains](https://img.shields.io/badge/supported%20domains-6-2E8B57)
 ![Runtime](https://img.shields.io/badge/runtime-Node.js%2022-3C873A)
 
 [Architecture](docs/ARCHITECTURE.md) · [Golden Corpus](docs/GOLDEN-CORPUS.md) · [Schema](schemas/correlation-edge.schema.json) · [Contributing](CONTRIBUTING.md) · [Validation](#validation)
@@ -40,6 +40,7 @@ flowchart LR
     P["SUPERHERO\nPERSON"] --> C
     T["RGBL\nTEXT"] --> C
     L["AWS\nLAW"] --> C
+    J["JIZZ\nPERSPECTIVE"] --> C
     C --> W["WEB"]
     C --> R["CRAYON"]
     C -. reviewed graph .-> Z["FUTURE MIZAN"]
@@ -52,7 +53,29 @@ flowchart LR
 | PERSON | [`rocksoul-superhero`](https://github.com/bjo163/rocksoul-superhero) | reference actor / transmission records |
 | TEXT | [`rocksoul-rgbl`](https://github.com/bjo163/rocksoul-rgbl) | reference exact-text records |
 | LAW | [`rocksoul-aws`](https://github.com/bjo163/rocksoul-aws) | reference legal/applicability records |
-| CORRELATION | **`rocksoul-correlation`** | own explainable cross-domain edges only |
+| PERSPECTIVE | [`rocksoul-jizz`](https://github.com/bjo163/rocksoul-jizz) | reference perspective/framing/reaction records |
+| RELATIONSHIP | **`rocksoul-correlation`** | own explainable reviewed cross-domain edges only |
+
+## Steward topology
+
+Correlation does **not** consume one of the five scheduled Steward intelligence slots. Its review is downstream and event-driven.
+
+```text
+SLOT 1  Ecosystem       → CRAYON
+SLOT 2  Story-History   → MFTL then LEGEND, isolated passes
+SLOT 3  Attestation     → RGBL then SUPERHERO, isolated passes
+SLOT 4  Law             → AWS dedicated
+SLOT 5  Perspective     → JIZZ dedicated, hourly
+
+RELATIONSHIP / CORRELATION REVIEW
+→ event-driven after a cross-domain relation becomes reviewable
+```
+
+The operational source-of-truth for this scheduler topology lives in `rocksoul-crayon`; this repository records the Correlation boundary so future maintainers do not introduce scheduled relationship hunting.
+
+> **High-frequency PERSPECTIVE observation does not imply high-frequency edge publication.**
+
+See [`docs/STEWARDS.md`](docs/STEWARDS.md).
 
 ## Golden rule
 
@@ -134,7 +157,7 @@ These are **edge states**, not verdicts on people, traditions, religions, cultur
 | **Oseberg women** | person evidence ≠ invented historical identity |
 | **ICC temporal jurisdiction** | legal relevance ≠ jurisdiction/guilt judgment |
 
-Together they exercise **STORY · EVENT · PERSON · TEXT · LAW** and both `canonical` and `candidate` reference semantics.
+Together they exercise the five historical source domains **STORY · EVENT · PERSON · TEXT · LAW** and both `canonical` and `candidate` reference semantics. The machine contract additionally supports **PERSPECTIVE → rocksoul-jizz** without fabricating a sixth golden case solely for coverage.
 
 See [`docs/GOLDEN-CORPUS.md`](docs/GOLDEN-CORPUS.md).
 
@@ -201,7 +224,7 @@ CI verifies:
 7. counterevidence/alternatives for guarded epistemic states;
 8. five independent dimension values in `0..1`;
 9. LAW-edge legal-boundary notes;
-10. minimum five-case corpus and full five-domain coverage;
+10. minimum five-case historical corpus, five legacy-domain fixture coverage, and explicit PERSPECTIVE ownership contract support;
 11. canonical Jerusalem foundation regression coverage.
 
 ## Candidate → canonical workflow
