@@ -4,6 +4,8 @@ const owners = {
   superhero: { repository: "rocksoul-superhero", domain: "PERSON" },
   rgbl: { repository: "rocksoul-rgbl", domain: "TEXT" },
   aws: { repository: "rocksoul-aws", domain: "LAW" },
+  jizz: { repository: "rocksoul-jizz", domain: "PERSPECTIVE" },
+  correlation: { repository: "rocksoul-correlation", domain: "RELATIONSHIP" },
 }
 const aliases = Object.fromEntries(Object.entries(owners).flatMap(([prefix,value]) => [[prefix,prefix],[value.repository,prefix]]))
 const repoToPrefix = Object.fromEntries(Object.entries(owners).map(([prefix,value]) => [value.repository,prefix]))
@@ -11,6 +13,8 @@ const repoToPrefix = Object.fromEntries(Object.entries(owners).map(([prefix,valu
 export function toQualifiedReference(ref) {
   const prefix = repoToPrefix[ref.repository]
   if (!prefix) throw new Error(`unknown repository: ${ref.repository}`)
+  const owner = owners[prefix]
+  if (ref.domain && ref.domain !== owner.domain) throw new Error(`repository/domain mismatch: ${ref.repository}/${ref.domain}`)
   return `${prefix}:${ref.record_id}`
 }
 
@@ -51,3 +55,5 @@ export async function resolveQualifiedReference(value,{ resolution = "canonical"
     policy: "Qualified references preserve owner repository and record identity; they do not transfer canonical ownership.",
   }
 }
+
+export const QUALIFIED_REFERENCE_OWNERS = Object.freeze(owners)

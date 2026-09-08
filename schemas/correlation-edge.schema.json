@@ -8,7 +8,7 @@
     "id": {"type":"string","pattern":"^CORR-[A-Z0-9-]+$"},
     "source_ref": {"$ref":"#/$defs/ref"},
     "target_ref": {"$ref":"#/$defs/ref"},
-    "relation_type": {"type":"string","enum":["attests","witnessed_by","describes","corresponds_to","temporally_aligns_with","geographically_aligns_with","textually_parallels","legally_relevant_to","contradicts","supports","weakens","derived_from","transmitted_by","alternative_to"]},
+    "relation_type": {"type":"string","enum":["attests","witnessed_by","describes","corresponds_to","temporally_aligns_with","geographically_aligns_with","textually_parallels","legally_relevant_to","observes","frames","reacts_to","contradicts","supports","weakens","derived_from","transmitted_by","alternative_to"]},
     "direction": {"type":"string","enum":["directed","undirected"]},
     "support": {"type":"array","items":{"type":"string"}},
     "counterevidence": {"type":"array","items":{"type":"string"}},
@@ -32,8 +32,8 @@
       "type":"object",
       "required":["repository","domain","record_id"],
       "properties": {
-        "repository":{"type":"string","enum":["rocksoul-mftl","rocksoul-legend","rocksoul-superhero","rocksoul-rgbl","rocksoul-aws"]},
-        "domain":{"type":"string","enum":["STORY","EVENT","PERSON","TEXT","LAW"]},
+        "repository":{"type":"string","enum":["rocksoul-mftl","rocksoul-legend","rocksoul-superhero","rocksoul-rgbl","rocksoul-aws","rocksoul-jizz"]},
+        "domain":{"type":"string","enum":["STORY","EVENT","PERSON","TEXT","LAW","PERSPECTIVE"]},
         "record_id":{"type":"string","minLength":1},
         "resolution":{"type":"string","enum":["canonical","candidate"],"default":"canonical"}
       },
