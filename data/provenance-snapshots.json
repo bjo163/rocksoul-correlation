@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-09-08T09:22:00Z",
+  "generated_at": "2026-09-08T10:25:00Z",
   "policy": "Owner repository movement marks dependent correlation references stale-for-review; it does not invalidate them automatically.",
   "repositories": {
     "rocksoul-mftl": {
@@ -10,17 +10,17 @@
     "rocksoul-legend": {
       "domain": "EVENT",
       "branch": "main",
-      "observed_head_sha": "1d0728e477dd1cccae1e8135d5297ff2e65a406b"
+      "observed_head_sha": "95b286572be5a9cc0fe118abc2fcaee201692123"
     },
     "rocksoul-superhero": {
       "domain": "PERSON",
       "branch": "main",
-      "observed_head_sha": "d60e8e5b26d2342705eaff4a8c9970d7c8dfdb27"
+      "observed_head_sha": "d34913200659f8b707698bea4e3d2a0b281691a8"
     },
     "rocksoul-rgbl": {
       "domain": "TEXT",
       "branch": "main",
-      "observed_head_sha": "0cab55211d0645b467ef4cd7ba79d08e5aedcff4"
+      "observed_head_sha": "935308f2e95df8302e7c21c378b2b2cac5964ed0"
     },
     "rocksoul-aws": {
       "domain": "LAW",
