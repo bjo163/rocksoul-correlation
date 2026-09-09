@@ -1,5 +1,14 @@
 {
   "schema": "rocksoul.todo.v1",
   "repository_id": "rocksoul-correlation",
-  "tasks": []
+  "tasks": [
+    {
+      "id": "CORRELATION-001",
+      "title": "Maintain repository control contract and local TODO",
+      "status": "NOT_STARTED",
+      "scope": "repository",
+      "github_issue": "https://github.com/bjo163/rocksoul-correlation/issues/8",
+      "evidence": []
+    }
+  ]
 }
