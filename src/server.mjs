@@ -116,9 +116,12 @@ export function createCorrelationServer() {
   });
 }
 
-if (import.meta.url === `file://${process.argv[1]}`) {
+import { pathToFileURL } from "node:url";
+
+if (process.argv[1] && import.meta.url === pathToFileURL(process.argv[1]).href) {
   const port = Number(process.env.PORT ?? 8787);
   createCorrelationServer().listen(port, "0.0.0.0", () => {
     console.log(`rocksoul-correlation listening on :${port}`);
   });
 }
+
