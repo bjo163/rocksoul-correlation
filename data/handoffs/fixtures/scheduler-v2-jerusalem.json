@@ -1,0 +1,65 @@
+{
+  "schema_version": "rocksoul.convergence-fixture.v1",
+  "topic": "Jerusalem 70 CE Temple-destruction chain",
+  "verification": {
+    "origin_issue": "https://github.com/bjo163/rocksoul-mftl/issues/3",
+    "origin_issue_state": "closed",
+    "origin_issue_v1_lifecycle": "UNKNOWN_LEGACY_NO_V1_MARKER",
+    "verified_refs": [
+      "rocksoul://bjo163/rocksoul-mftl/STORY/MYTH-JERUSALEM-TEMPLE-DESTRUCTION-PROPHECY-000001",
+      "rocksoul://bjo163/rocksoul-legend/EVENT/EVT-JERUSALEM-SECOND-TEMPLE-DESTRUCTION-70",
+      "rocksoul://bjo163/rocksoul-superhero/PERSON/PER-JERUSALEM-FLAVIUS-JOSEPHUS",
+      "rocksoul://bjo163/rocksoul-rgbl/TEXT/mw:passage:sblgnt:v1-2:mark:13:2"
+    ],
+    "note": "The closed MFTL issue records completion evidence for all four refs and explicitly preserves TEXT/STORY/EVENT/PERSON epistemic boundaries."
+  },
+  "positive": {
+    "schema_version": "rocksoul.relationship-handoff.v1",
+    "handoff_id": "RSH-JERUSALEM70-STORY-EVENT-20260911",
+    "created_at": "2026-09-11T12:45:00Z",
+    "origin_domain": "STORY",
+    "origin_repository": "rocksoul-mftl",
+    "origin_issue": "https://github.com/bjo163/rocksoul-mftl/issues/3",
+    "source_ref": "rocksoul://bjo163/rocksoul-mftl/STORY/MYTH-JERUSALEM-TEMPLE-DESTRUCTION-PROPHECY-000001",
+    "target_ref": "rocksoul://bjo163/rocksoul-legend/EVENT/EVT-JERUSALEM-SECOND-TEMPLE-DESTRUCTION-70",
+    "proposed_relation_type": "corroborates",
+    "support": [
+      "MFTL issue #3 verifies the canonical STORY record and the LEGEND 70 CE destruction event as separate completed records in one four-domain research chain.",
+      "The shared case preserves textual prediction narrative separately from the independently modeled historical destruction event."
+    ],
+    "counterevidence": [
+      "Text/event correspondence does not establish supernatural fulfillment or a composition date; the relationship must stay narrower than causation or fulfillment."
+    ],
+    "alternative_relations": [
+      "subject_matter_overlap",
+      "compared_with"
+    ],
+    "confidence": 0.82,
+    "freshness_state": "CURRENT",
+    "review_status": "PENDING_CORRELATION_REVIEW"
+  },
+  "negative": {
+    "schema_version": "rocksoul.relationship-handoff.v1",
+    "handoff_id": "RSH-JERUSALEM70-STORY-PERSON-SIMILARITY-20260911",
+    "created_at": "2026-09-11T12:45:00Z",
+    "origin_domain": "STORY",
+    "origin_repository": "rocksoul-mftl",
+    "origin_issue": "https://github.com/bjo163/rocksoul-mftl/issues/3",
+    "source_ref": "rocksoul://bjo163/rocksoul-mftl/STORY/MYTH-JERUSALEM-TEMPLE-DESTRUCTION-PROPHECY-000001",
+    "target_ref": "rocksoul://bjo163/rocksoul-superhero/PERSON/PER-JERUSALEM-FLAVIUS-JOSEPHUS",
+    "proposed_relation_type": "same_as",
+    "support": [
+      "semantic similarity and co-occurrence around Jerusalem 70 CE"
+    ],
+    "counterevidence": [
+      "The source is a STORY record while the target is a PERSON record; they cannot be the same entity."
+    ],
+    "alternative_relations": [
+      "witness_context",
+      "recorded_event_context"
+    ],
+    "confidence": 0.2,
+    "freshness_state": "CURRENT",
+    "review_status": "PENDING_CORRELATION_REVIEW"
+  }
+}
